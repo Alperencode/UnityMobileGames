@@ -7,7 +7,8 @@ public class Movement : MonoBehaviour
     [SerializeField] float horizontalSpeed;
     [SerializeField] float maxArea;
     [SerializeField] GameObject gameOverText;
-    [HideInInspector] public bool isAlive;
+    [SerializeField] GameObject playAgainButton;
+    public bool isAlive;
     [HideInInspector] public int score;
     float horizontal;
     private bool flag = true;
@@ -19,10 +20,12 @@ public class Movement : MonoBehaviour
 
         if (isAlive)
         {
+
             // keyboard movement
             // transform.Translate(new Vector3(horizontal * horizontalSpeed * Time.deltaTime, 0, 0));
-            
+
             // Mobile Movement
+            flag = true;
             int i = 0;
             while (i < Input.touchCount)
             {
@@ -46,10 +49,27 @@ public class Movement : MonoBehaviour
             if (flag)
             {
                 Instantiate(gameOverText);
+                Instantiate(playAgainButton);
                 flag = false;
             }
-            Destroy(Camera.main.GetComponent<SpawnMeteor>());
         }
         
+    }
+
+    public void PlayAgain()
+    {
+        Debug.Log("PlayAgain() called");
+        GameObject[] GameOverUIs = GameObject.FindGameObjectsWithTag("GameOverUIs");
+        foreach (GameObject objects in GameOverUIs) Destroy(objects);
+        GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
+        foreach (GameObject meteor in meteors) Destroy(meteor);
+
+        GameObject.FindWithTag("Player").GetComponent<Movement>().isAlive = true;
+        GameObject.FindWithTag("Player").GetComponent<Movement>().score = 0;
+        GameObject.FindWithTag("ScoreText").GetComponent<TextMeshPro>().text = $"score: 0";
+        Camera.main.GetComponent<SpawnMeteor>().level = 1;
+        Camera.main.GetComponent<SpawnMeteor>().waitSeconds = 1f;
+        Camera.main.GetComponent<SpawnMeteor>().flag = true;
+        Camera.main.GetComponent<SpawnMeteor>().startCoroutineFunc();
     }
 }

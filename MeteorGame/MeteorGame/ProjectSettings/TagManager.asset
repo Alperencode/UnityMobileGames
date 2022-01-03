@@ -8,6 +8,7 @@ TagManager:
   - ScoreText
   - Meteor
   - LevelText
+  - GameOverUIs
   layers:
   - Default
   - TransparentFX
