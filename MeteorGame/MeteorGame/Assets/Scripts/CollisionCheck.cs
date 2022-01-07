@@ -11,6 +11,8 @@ public class CollisionCheck : MonoBehaviour
 
         if (other.CompareTag("Ground"))
         {
+            // When meteor hits ground:
+
             // Find player and if its alive increase the score
             GameObject player = GameObject.FindWithTag("Player");
             if (player.GetComponent<Movement>().isAlive)
@@ -24,7 +26,9 @@ public class CollisionCheck : MonoBehaviour
         }
         else if (other.CompareTag("Player"))
         {
-            // Stop the meteor and change the isAlive bool
+            // When meteor hits player:
+
+            // Stop the meteors and change the isAlive bool
             Destroy(this.GetComponent<MeteorMove>());
             other.GetComponent<Movement>().isAlive = false;
         }
